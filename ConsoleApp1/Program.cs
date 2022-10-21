@@ -8,27 +8,56 @@ namespace ConsoleApp1
 {
     internal class Program
     {
+        
         static void Main(string[] args)
         {
+            int error;
+            do
+            {
+                try
+                {
+                    double[] triangle = new double[3];
+                    Console.WriteLine("Введите длины сторон треугольника (через enter)");
+                    for (int i = 0; i < 3; i++)
+                    {
+                        triangle[i] = Convert.ToDouble(Console.ReadLine());
+                    }
+                    double circle = 0;
+                    Console.WriteLine("\nВведите радиус круга");
+                    circle = Convert.ToDouble(Console.ReadLine());
+                    double[] rectangle = new double[2];
+                    Console.WriteLine("\nВведите длины сторон прямоугольника (через enter)");
+                    for (int i = 0; i < 2; i++)
+                    {
+                        rectangle[i] = Convert.ToDouble(Console.ReadLine());
+                    }
+                    Figure[] figure = new Figure[]
+                    {
+                    new Triangle (triangle[0],triangle[1],triangle[2]),
+                    new Circle(circle),
+                    new Rectangle(rectangle[0],rectangle[1])
+                    };
 
-            Figuri[] figuri = new Figuri[]
-            {
-                new Triangle (5,2,5),
-                new Circle(8),
-                new Rectangle(5,6)
-            };
-            for(int i= 0; i < figuri.Length; i++)
-            {
-                figuri[i].Perimeter();
-                figuri[i].Area();
-                figuri[i].PrintFigure();
+                    for (int i = 0; i < figure.Length; i++)
+                    {
+                        figure[i].Perimeter();
+                        figure[i].Area();
+                        figure[i].PrintFigure();
+                    }
+                    error = 0;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Входная строка имет неверный формат, перезапуск программы\n");
+                    error = 1;
+                }
             }
+            while (error != 0);
             Console.ReadKey();
         }
     }
-    public abstract class Figuri
+    public abstract class Figure
     {
-        public string figura;
         public double x;
         public double y;
         public double z;
@@ -40,10 +69,10 @@ namespace ConsoleApp1
       
     }
       
-    public class Rectangle : Figuri
+    public class Rectangle : Figure
     {
-        public double perim;
-        public double plosha;
+        public double perimeter;
+        public double area;
         public Rectangle(double a, double b)
         {
             x = a;
@@ -51,25 +80,25 @@ namespace ConsoleApp1
         }
         public override decimal Area()
         {
-                plosha = x * y;
-            return (decimal)plosha;
+            area = x * y;
+            return (decimal)area;
         }
 
         public override decimal Perimeter()
         {
-                perim = (x + y) * 2;
-            return (decimal)perim;
+            perimeter = (x + y) * 2;
+            return (decimal)perimeter;
         }
 
         public override void PrintFigure()
         {
-                Console.WriteLine($"Прямоугольник: Периметр = {perim}, Площадь = {plosha}");
+            Console.WriteLine($"Прямоугольник: Периметр = {perimeter}, Площадь = {area}");
         }
     }
-    public class Circle : Figuri
+    public class Circle : Figure
     {
-        public double perim;
-        public double plosha;
+        public double perimeter;
+        public double area;
 
         public Circle(double rr)
         {
@@ -77,48 +106,47 @@ namespace ConsoleApp1
         }
         public override decimal Area()
         {
-                plosha = Math.PI * Math.Pow(r,2);
-            return (decimal)plosha;
+            area = Math.PI * Math.Pow(r,2);
+            return (decimal)area;
         }
 
         public override decimal Perimeter()
         {
-                perim = 2* Math.PI*r;
-            return (decimal)perim;
+            perimeter = 2* Math.PI*r;
+            return (decimal)perimeter;
         }
         public override void PrintFigure()
         {
-                Console.WriteLine($"Круг: Периметр = {perim}, Площадь = {plosha}");
+                Console.WriteLine($"Круг: Периметр = {perimeter}, Площадь = {area}");
         }
     }
-    public class Triangle : Figuri
+    public class Triangle : Figure
     {
-        public double perim;
-        public double plosha;
+        public double perimeter;
+        public double area;
 
-    public Triangle(double a, double b, double c)
-    {
+        public Triangle(double a, double b, double c)
+        {
             x = a;
             y = b;
             z = c;
-    }
+        }
 
 
-    public override decimal Area()
+        public override decimal Area()
         {
-            plosha = Math.Sqrt(perim*(perim-x)* (perim - y)* (perim - z));
-            return (decimal)plosha;
+            area = Math.Sqrt(perimeter * (perimeter - x)* (perimeter - y)* (perimeter - z));
+            return (decimal)area;
         }
 
         public override decimal Perimeter()
         {
-
-            perim = x + y + z;
-            return (decimal)perim;
+            perimeter = x + y + z;
+            return (decimal)perimeter;
         }
         public override void PrintFigure()
         {
-                Console.WriteLine($"Треугольник: Периметр = {perim}, Площадь = {plosha}");
+            Console.WriteLine($"\nТреугольник: Периметр = {perimeter}, Площадь = {area}");
         }
     }
 }
